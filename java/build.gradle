@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.sigv4aSigning.SigV4ASign'
+version = '1.0'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'software.amazon.awssdk:auth:2.17.151'
+    implementation 'software.amazon.awssdk:auth-crt:2.17.151'
+    implementation 'software.amazon.awssdk.crt:aws-crt:0.15.23'
+    testImplementation 'junit:junit:3.8.1'
+}
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    classifier = 'all'
+    from {
+        // change here: runtimeClasspath instead of runtime
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/.SF"
+        exclude "META-INF/.DSA"
+        exclude "META-INF/*.RSA"
+        exclude "META-INF/*.txt"
+    }
+    with jar
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': "$mainClassName"
+        )
+    }
+}

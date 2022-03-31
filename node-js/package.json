@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "aws-crt": "1.11.1"
+  }
+}

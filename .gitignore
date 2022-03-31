@@ -1,0 +1,11 @@
+# node-js
+node-js/node_modules
+node-js/package-lock.json
+
+# java/Intellij
+.DS_Store
+java/.idea
+java/build
+java/.gradle
+java/gradlew
+java/gradlew.bat
