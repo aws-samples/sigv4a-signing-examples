@@ -18,7 +18,7 @@ The hostname for the request is `<MRAP_alias>.accesspoint.s3-global.amazonaws.co
 If all you need is to get the headers with most common config, use sigV4ASignBasic(method, endpoint, service).
 
 ```js
-const { sigV4ASignSimple } = require('./sigv4a_sign')
+const { sigV4ASignBasic } = require('./sigv4a_sign')
 
 var method = 'GET';
 var endpoint = 'https://<MRAP_alias>.accesspoint.s3-global.amazonaws.com/<s3-object-key>';
@@ -33,7 +33,7 @@ console.log(headers._flatten());
 If you need high customization, use sigV4ASign(method, endpoint, config = crt.auth.AwsSigningConfig).
 
 ```js
-const { sigV4ASignSimple } = require('./sigv4a_sign')
+const { sigV4ASignBasic } = require('./sigv4a_sign')
 
 var config = {
     service: 's3',
@@ -55,7 +55,7 @@ console.log(headers._flatten());
 Full example to get signed headers and make an API call.
 
 ```js
-const { sigV4ASignSimple } = require('./sigv4a_sign')
+const { sigV4ASignBasic } = require('./sigv4a_sign')
 const https = require('https');
 
 var method = 'GET';
