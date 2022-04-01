@@ -1,5 +1,7 @@
 ## Gradle
 
+To install gradle, please follow [gradle installation](https://gradle.org/install/).
+
 Tested `build.gradle` with Gradle version: `7.1`
 
 Install dependencies:
@@ -153,16 +155,15 @@ Full example to get signed headers and make an API call.
 ```java
 import com.sigv4aSigning.SigV4ASign;
 
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.signer.AwsSignerExecutionAttribute;
+import software.amazon.awssdk.core.interceptor.ExecutionAttributes;
+import software.amazon.awssdk.http.SdkHttpFullRequest;
 import software.amazon.awssdk.http.SdkHttpMethod;
 import software.amazon.awssdk.regions.RegionScope;
 
 
 import java.io.*;
 import java.net.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -179,13 +180,13 @@ public class MyClass {
         SdkHttpFullRequest request = SdkHttpFullRequest.builder()
                 .method(method)
                 .encodedPath(uri.toString())
-                .port(PORT)
-                .protocol(PROTOCOL_HTTPS)
+                .port(SigV4ASign.PORT)
+                .protocol(SigV4ASign.PROTOCOL_HTTPS)
                 .host(uri.getHost())
                 .build();
 
         ExecutionAttributes ea = new ExecutionAttributes();
-        ea.putAttribute(AwsSignerExecutionAttribute.AWS_CREDENTIALS, sigV4ASign.awsCredentials);
+        ea.putAttribute(AwsSignerExecutionAttribute.AWS_CREDENTIALS, sigV4ASign.getAwsCredentials());
         ea.putAttribute(AwsSignerExecutionAttribute.SERVICE_SIGNING_NAME, serviceName);
 
         Map<String, List<String>> headers = sigV4ASign.getHeaders(request, ea, globalRegion);
