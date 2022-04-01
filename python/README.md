@@ -19,6 +19,8 @@ The hostname for the request is `<MRAP_alias>.accesspoint.s3-global.amazonaws.co
 If all you need is to get the headers with most common config.
 
 ```python
+from sigv4a_sign import SigV4ASign
+
 service = 's3'
 region = '*'
 method = 'GET'
