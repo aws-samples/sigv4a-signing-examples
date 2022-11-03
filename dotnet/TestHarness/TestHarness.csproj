@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+  <PackageReference Include="AWSSDK.Core" Version="3.7.100.1" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+  <ProjectReference Include="..\SigV4A\SigV4A.csproj" />
+      <PackageReference Include="AWSCRT" Version="0.4.0" />
+    <PackageReference Include="AWSCRT-AUTH" Version="0.4.0" />
+  </ItemGroup>
+</Project>
