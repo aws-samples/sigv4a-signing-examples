@@ -1,10 +1,10 @@
 ﻿using Aws.Crt.Auth;
 using Aws.Crt.Http;
-using SigV4.Contracts;
+using SigV4A.Contracts;
 
-namespace SigV4;
+namespace SigV4A;
 
-public class SigV4Sign : ISigV4Sign
+public class SigV4ASign : ISigV4ASign
 {
     public IEnumerable<HttpHeader> SignRequest(string method, string endpoint, string service, Credentials credentials)
     {

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{8D1C3126-48D1-401C-A05E-BEA405766BBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigV4", "SigV4\SigV4.csproj", "{9F9FAF77-1120-4D33-9F25-34869EC3B5B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigV4A", "SigV4A\SigV4A.csproj", "{9F9FAF77-1120-4D33-9F25-34869EC3B5B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

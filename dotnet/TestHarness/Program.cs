@@ -1,13 +1,13 @@
 ﻿using Amazon.Runtime.CredentialManagement;
 using Aws.Crt.Auth;
-using SigV4;
-using SigV4.Contracts;
+using SigV4A;
+using SigV4A.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
 var services = new ServiceCollection();
-services.AddTransient<ISigV4Sign, SigV4Sign>();
+services.AddTransient<ISigV4ASign, SigV4ASign>();
 var provider = services.BuildServiceProvider();
-var signingService = provider.GetRequiredService<ISigV4Sign>();
+var signingService = provider.GetRequiredService<ISigV4ASign>();
 
 var method = HttpMethod.Get;
 var endpoint = args[0];
