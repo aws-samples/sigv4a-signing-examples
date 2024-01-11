@@ -35,6 +35,7 @@ If you want to define boto3 session first and pass it to `SigV4ASign`.
 
 ```python
 from sigv4a_sign import SigV4ASign
+from sigv4a_sign import boto3
 
 service = 's3'
 region = '*'
