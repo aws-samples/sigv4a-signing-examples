@@ -16,7 +16,7 @@ with common languages such as Python, Node.js, Java, C#, Go and Rust.
 - [Node.js](./node-js)
 - [Java](./java)
 - [C#](./dotnet)
-- Go
+- [Go#](./go)
 - Rust
 - C++
 
