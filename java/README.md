@@ -2,7 +2,7 @@
 
 To install gradle, please follow [gradle installation](https://gradle.org/install/).
 
-Tested `build.gradle` with Gradle version: `7.1`
+Tested `build.gradle` with Gradle version: `8.3`
 
 Install dependencies:
 
@@ -35,6 +35,7 @@ see [Multi-Region Access Point hostnames](https://docs.aws.amazon.com/AmazonS3/l
 - [If all you need is to get the headers with most common config and explicitly passing accessKeyId and secretAccessKey.](#Example-2)
 - [If you need high customization.](#Example-3)
 - [Full example to get signed headers and make an API call.](#Example-4)
+- [Full example to upload data/file though Amazon S3 Multi-Region Access Point (MRAP) into Amazon S3 bucket](#Example-5)
 
 
 ### Examples
@@ -162,8 +163,12 @@ import software.amazon.awssdk.http.SdkHttpMethod;
 import software.amazon.awssdk.regions.RegionScope;
 
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -196,6 +201,86 @@ public class MyClass {
             HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
             con.setRequestMethod("GET");
             headers.forEach((key, value) -> con.setRequestProperty(key, value.get(0)));
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String line;
+            StringBuffer sb = new StringBuffer();
+
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+
+            in.close();
+            con.disconnect();
+            System.out.println(sb);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+#### Example 5
+Full example to upload data/file through MRAP into an S3 bucket.
+
+```java
+import com.sigv4aSigning.SigV4ASign;
+
+import software.amazon.awssdk.auth.signer.AwsSignerExecutionAttribute;
+import software.amazon.awssdk.core.interceptor.ExecutionAttributes;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.http.SdkHttpFullRequest;
+import software.amazon.awssdk.http.SdkHttpMethod;
+import software.amazon.awssdk.regions.RegionScope;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
+public class MyClass {
+    public static void main(String[] args) {
+        SigV4ASign sigV4ASign = SigV4ASign.create();
+
+        String url = "https://<MRAP_alias>.accesspoint.s3-global.amazonaws.com/<s3-object-key>";
+        URI uri = URI.create(url);
+        String serviceName = "s3";
+        RegionScope globalRegion = RegionScope.GLOBAL;
+        SdkHttpMethod method = SdkHttpMethod.PUT;
+        String requestBody = "hello world";
+
+        SdkHttpFullRequest request = SdkHttpFullRequest.builder()
+                .method(method)
+                .encodedPath(uri.toString())
+                .port(SigV4ASign.PORT)
+                .protocol(SigV4ASign.PROTOCOL_HTTPS)
+                .host(uri.getHost())
+                .contentStreamProvider(RequestBody.fromString(requestBody).contentStreamProvider())
+                .build();
+
+        ExecutionAttributes ea = new ExecutionAttributes();
+        ea.putAttribute(AwsSignerExecutionAttribute.AWS_CREDENTIALS, sigV4ASign.getAwsCredentials());
+        ea.putAttribute(AwsSignerExecutionAttribute.SERVICE_SIGNING_NAME, serviceName);
+
+        Map<String, List<String>> headers = sigV4ASign.getHeaders(request, ea, globalRegion);
+
+        try {
+            URL urlObj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+            con.setDoOutput(true);
+            con.setRequestMethod("PUT");
+            headers.forEach((key, value) -> con.setRequestProperty(key, value.get(0)));
+
+            // Handle PUT body payload
+            OutputStreamWriter out = new OutputStreamWriter(
+                    con.getOutputStream());
+            out.write(requestBody);
+            out.close();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String line;
