@@ -22,7 +22,7 @@ dependencies {
 
 task fatJar(type: Jar) {
     manifest.from jar.manifest
-    classifier = 'all'
+    archiveClassifier = 'all'
     from {
         // change here: runtimeClasspath instead of runtime
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

@@ -12,6 +12,8 @@ The hostname for the request is `<MRAP_alias>.accesspoint.s3-global.amazonaws.co
 - [If you want to define boto3 session first and pass it to SigV4ASign.](#Example-2)  
 - [If you need high customization.](#Example-3)  
 - [Full example to get signed headers and make an API call.](#Example-4)  
+- [Full example to upload data/file though Amazon S3 Multi-Region Access Point (MRAP) into Amazon S3 bucket](#Example-5)
+- 
 
 ### Examples
 
@@ -83,4 +85,30 @@ url = 'https://<MRAP_alias>.accesspoint.s3-global.amazonaws.com/<s3-object-key>'
 headers = SigV4ASign().get_headers_basic(service, region, method, url)
 r = requests.get(url, headers=headers)
 print(f'status_code: {r.status_code} \nobject text: {r.text}')
+```
+
+#### Example 5
+Full example to upload data/file through MRAP into an S3 bucket.
+
+```python
+from sigv4a_sign import SigV4ASign
+
+# pip install requests
+import requests
+
+service = 's3'
+region = '*'
+method = 'PUT'
+url = 'https://<MRAP_alias>.accesspoint.s3-global.amazonaws.com/<s3-object-key>'
+data = 'hello world'
+
+aws_request_config = {
+    'method': 'PUT',
+    'url': url,
+    'data': data
+}
+
+headers = SigV4ASign().get_headers(service, region, aws_request_config)
+r = requests.put(url, data=data, headers=headers)
+print(f'status_code: {r.status_code}')
 ```
