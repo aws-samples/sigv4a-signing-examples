@@ -33,7 +33,8 @@ console.log(headers._flatten());
 If you need high customization, use sigV4ASign(method, endpoint, config = crt.auth.AwsSigningConfig).
 
 ```js
-const { sigV4ASignBasic } = require('./sigv4a_sign')
+const { sigV4ASign } = require('./sigv4a_sign')
+const crt = require("aws-crt")
 
 var config = {
     service: 's3',
