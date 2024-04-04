@@ -6,6 +6,8 @@ AWS is rolling out an extension to SigV4 called Signature Version 4A (SigV4A).
 This extension enables signatures that are valid in more than one AWS Region.
 This is required for signing multi-Region API requests, for example with [Amazon S3 Multi-Region Access Points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiRegionAccessPoints.html).
 
+If you are looking for standard SigV4 code examples, please check the [SigV4 Signing Examples](https://github.com/aws-samples/sigv4-signing-examples) repository
+
 This repository servers to provide examples how to sign requests with SigV4A
 to make Rest API requests to AWS services
 with common languages such as Python, Node.js, Java, C#, Go and Rust.
